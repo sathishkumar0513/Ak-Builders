@@ -76,18 +76,17 @@ psql "<your Neon connection string>" -f akb.sql
 (Do this *before* step 4, or on an empty Neon database.) Old uploaded photos stay on your PC —
 re-upload the company logo in Settings after going live.
 
-## 6. Frontend — Cloudflare Pages
-1. Sign up at dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git** → pick the repo.
-2. Build settings:
-   - Framework preset: **Vite** (or None)
+## 6. Frontend — Cloudflare (Workers)
+1. dash.cloudflare.com → **Workers & Pages → Create** → import the GitHub repo `Ak-Builders`.
+2. Project **Settings → Build**:
    - Root directory: `frontend`
    - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Environment variables: `VITE_API_URL` = `https://<your-service>.onrender.com`  (no `/` at the end)
-     and `NODE_VERSION` = `20`
-3. **Save and Deploy**. You get `https://<name>.pages.dev`.
-4. If the name is not `akbuilders.pages.dev`, go back to Render → your service → **Environment** and
-   update `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS` and `FRONTEND_URL` to the real address. Render redeploys.
+   - Deploy command: `npx wrangler deploy` (uses `frontend/wrangler.jsonc`)
+   - Build variables: `VITE_API_URL` = `https://<your-service>.onrender.com` (no `/` at the end),
+     `NODE_VERSION` = `20`
+3. Deployments → **Retry build**. Your address: `https://ak-builders.<name>.workers.dev`.
+4. Render → your service → **Environment**: set `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS`
+   and `FRONTEND_URL` to that address (no `/` at the end) → Save.
 
 ## 7. Daily job + backups — GitHub Actions
 1. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**

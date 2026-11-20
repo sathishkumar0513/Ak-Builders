@@ -1,0 +1,12 @@
+// Cloudflare Workers config: serves the built React app (dist/) as static files.
+// Cloudflare build settings: Root directory = frontend, Build command = npm run build,
+// Deploy command = npx wrangler deploy, Build variables = VITE_API_URL, NODE_VERSION.
+{
+  "name": "ak-builders",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // React Router: unknown paths (/customers/12 etc.) load index.html
+    "not_found_handling": "single-page-application"
+  }
+}
