@@ -1,0 +1,27 @@
+# --- Core ---
+Django==5.2.*
+djangorestframework==3.18.*
+djangorestframework-simplejwt==5.5.*
+django-cors-headers==4.7.*
+django-filter==25.*
+drf-spectacular==0.28.*
+python-decouple==3.8
+psycopg[binary]==3.2.*
+Pillow==13.*
+
+# --- Documents / exports ---
+reportlab==4.4.*
+num2words==0.5.*
+openpyxl==3.1.*
+
+# --- Background jobs (optional: reminders) ---
+celery==5.5.*
+redis==5.2.*
+
+# --- Production ---
+dj-database-url==3.*
+# Cloud file storage for uploads on free hosts (used only when CLOUDINARY_URL is set)
+cloudinary==1.*
+django-cloudinary-storage==0.3.*
+gunicorn==23.*
+whitenoise==6.9.*

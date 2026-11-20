@@ -1,0 +1,47 @@
+# Render Blueprint — AK Builders API on the FREE plan.
+# Render dashboard → New → Blueprint → pick this GitHub repo. Fill the values marked "sync: false".
+services:
+  - type: web
+    name: akbuilders-api
+    runtime: docker
+    plan: free
+    region: singapore          # closest Render region to Tamil Nadu
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/v1/health/
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: USE_HTTPS
+        value: "True"
+      - key: ALLOWED_HOSTS
+        value: localhost       # Render's own *.onrender.com address is added automatically
+      - key: DATABASE_URL       # Neon → Connect → copy the connection string (pooled)
+        sync: false
+      - key: CLOUDINARY_URL     # Cloudinary dashboard → API Keys → "API environment variable"
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS   # your Cloudflare Pages address, e.g. https://akbuilders.pages.dev
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS   # same address as above
+        sync: false
+      - key: FRONTEND_URL           # same address as above (used in password-reset links)
+        sync: false
+      - key: ADMIN_URL              # hidden admin path, e.g. office-7f3k2/
+        sync: false
+      # Demo setup: creates roles, company settings, sample materials and the admin login on
+      # every start (safe to repeat — existing data is not touched). Set to "False" for real use.
+      - key: SEED_ON_START
+        value: "True"
+      - key: DEMO_ADMIN_USERNAME
+        value: admin
+      - key: DEMO_ADMIN_PASSWORD     # the password you will log in with for the demo
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: GUNICORN_THREADS
+        value: "4"
+      - key: COMPANY_STATE_CODE
+        value: "33"
+      - key: COMPANY_STATE_NAME
+        value: Tamil Nadu

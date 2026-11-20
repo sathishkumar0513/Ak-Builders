@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+backend/media/
+backend/staticfiles/
+# Node
+node_modules/
+frontend/dist/
+# Secrets
+.env
+backend/.env
+frontend/.env
+# Backups
+backups/*.sql.gz
+backups/*.dump
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Old phase archives and local backups — never upload
+_to_delete/
+backups/*.sql

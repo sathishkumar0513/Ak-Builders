@@ -1,0 +1,9 @@
+-r requirements.txt
+pytest==8.*
+pytest-django==4.*
+factory-boy==3.3.*
+flake8==7.*
+black==25.*
+isort==6.*
+pytest-cov==6.*
+pip-audit==2.*

@@ -1,0 +1,10 @@
+from django.apps import AppConfig
+
+
+class AccountsConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.accounts"
+    verbose_name = "Users & Roles"
+
+    def ready(self):
+        from . import schema  # noqa: F401  (registers the Swagger auth extension)

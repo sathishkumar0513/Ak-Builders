@@ -1,0 +1,39 @@
+# Free daily jobs (GitHub Actions) — replaces the Celery beat worker on the free plan.
+# Needs one repository secret: Settings → Secrets and variables → Actions → New secret
+#   DATABASE_URL = the Neon connection string (same one Render uses)
+name: Daily jobs
+
+on:
+  schedule:
+    - cron: "30 20 * * *"   # 02:00 IST every day
+  workflow_dispatch:         # "Run workflow" button for a manual run
+
+jobs:
+  expire-and-backup:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      ALLOWED_HOSTS: localhost
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Expire old quotations
+        run: |
+          export SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(50))")
+          python manage.py expire_quotations
+      - name: Database backup (kept 14 days under this run's Artifacts)
+        run: docker run --rm postgres:18 pg_dump --no-owner --no-acl "$DATABASE_URL" | gzip > ../akbuilders-$(date +%F).sql.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db-backup
+          path: akbuilders-*.sql.gz
+          retention-days: 14
