@@ -66,6 +66,8 @@ class QuotationViewSet(
     http_method_names = ["get", "post", "patch", "delete"]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):  # API docs generation: no DB work
+            return Quotation.objects.none()
         qs = Quotation.objects.select_related("customer", "created_by")
         if self.action == "list":
             services.expire_due_quotations()
